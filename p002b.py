@@ -1,4 +1,4 @@
-from numpy import einsum_path
+
 MAXV = 4000000
 
 # faster solution, iterative
