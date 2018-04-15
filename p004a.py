@@ -1,8 +1,7 @@
+import library
+
 digits = 3
 maxnum = 10**digits-1
-
-def palindrome(x):
-    return str(x) == str(x)[::-1]
 
 def make_palindrome(x):
     return int(str(x) + str(x)[::-1])
@@ -13,7 +12,7 @@ largest = 0
 for a in range(maxnum+1):
     for b in range(a+1, maxnum+1):
         ab = a * b
-        if ab > largest and palindrome(ab):
+        if ab > largest and library.palindrome(ab):
             largest = ab
 #            print(': larger', a, '*', b, '=', ab)
 print(largest)
@@ -25,7 +24,7 @@ while a > largest // (maxnum+1):
     b = maxnum
     while b > largest // a: # so a*b > largest
         ab = a * b
-        if palindrome(ab):
+        if library.palindrome(ab):
             largest = ab
             print(': larger', a, '*', b, '=', ab)
         b -= 1
