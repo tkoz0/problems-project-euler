@@ -21,8 +21,10 @@ print(sum_)
 # F_n = 4*F_(n-3) + F_(n-6)
 sum_ = 2
 a,b = 0,2
+print(': add', 2)
 while True:
     a,b = b, 4*b+a
     if b > MAXV: break
     sum_ += b
+    print(': add', b)
 print(sum_)

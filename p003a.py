@@ -24,10 +24,13 @@ print(largest)
 
 # faster algorithm, dividing out smaller prime factors
 n = N
-while n % 2 == 0: n //= 2
+while n % 2 == 0:
+    n //= 2
+    print(': factor', 2)
 d = 3
 while d <= int(math.sqrt(n)):
     while n % d == 0:
         n //= d
+        print(': factor', d)
     d += 2
 print(n)
