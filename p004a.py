@@ -1,4 +1,4 @@
-import library
+import libtkoz as lib
 
 digits = 3
 maxnum = 10**digits-1
@@ -12,7 +12,7 @@ largest = 0
 for a in range(maxnum+1):
     for b in range(a+1, maxnum+1):
         ab = a * b
-        if ab > largest and library.palindrome(ab):
+        if ab > largest and lib.palindrome(ab):
             largest = ab
 #            print(': larger', a, '*', b, '=', ab)
 print(largest)
@@ -24,7 +24,7 @@ while a > largest // (maxnum+1):
     b = maxnum
     while b > largest // a: # so a*b > largest
         ab = a * b
-        if library.palindrome(ab):
+        if lib.palindrome(ab):
             largest = ab
             print(': larger', a, '*', b, '=', ab)
         b -= 1

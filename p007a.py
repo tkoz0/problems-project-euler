@@ -1,4 +1,4 @@
-import library
+import libtkoz as lib
 
 index = 10001
 
@@ -7,7 +7,7 @@ counter = 0
 n = 1
 while True:
     n += 1
-    if library.prime(n):
+    if lib.prime(n):
         counter += 1
     if counter == index:
         print(n)

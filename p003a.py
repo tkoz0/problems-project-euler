@@ -1,4 +1,4 @@
-import library
+import libtkoz as lib
 import math
 
 N = 600851475143
@@ -7,10 +7,10 @@ N = 600851475143
 largest = 0
 for d in range(1, int(math.sqrt(N))+1):
     if N % d == 0:
-        if library.prime(N//d): # n/d decreases so if prime, its the largest
+        if lib.prime(N//d): # n/d decreases so if prime, its the largest
             largest = N//d
             break
-        if library.prime(d): # d is increasing
+        if lib.prime(d): # d is increasing
             largest = d
 print(largest)
 

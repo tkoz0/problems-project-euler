@@ -1,4 +1,3 @@
-import library
 
 maxdiv = 20
 
