@@ -20,3 +20,10 @@ def list_primes(n):
         if prime(p):
             primes.append(p)
     return primes
+
+def gcd_euclid(m, n):
+    assert m > n
+    while m % n != 0:
+        m, n = n, m % n
+    return n
+
