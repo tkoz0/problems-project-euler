@@ -65,6 +65,20 @@ def divisors2(n):
     if n == 1: return total # all factors divided out
     else: return total * 2 # remaining value is a prime factor
 
+def binom_coeff(n, k): # computes binomial coefficient
+    assert n >= k >= 0
+    num = n # for n, n-1, ..., 1
+    result = 1 # this works because n consecutive integers is divisible by n!
+    for i in range(k):
+        result *= num
+        num -= 1
+        result //= i+1
+    for i in range(n-k):
+        result *= num
+        num -= 1
+        result //= i+1
+    return result
+
 # some tests for these functions to check that they work properly
 if __name__ == '__main__':
     assert not prime(1) and prime(2) and prime(3)
@@ -110,6 +124,19 @@ if __name__ == '__main__':
     assert divisors2(64) == 7 and divisors2(4294967296) == 33
     assert divisors2(2*2*5*7*11*11*11) == 3 * 2 * 2 * 4
     assert divisors2(1) == 1
+    #
+    pascalsize = 50
+    pascal = [] # generate pascal triangle (square)
+    for i in range(pascalsize): pascal.append([0]*pascalsize)
+    pascal[0] = [1]*pascalsize
+    for i in range(pascalsize): pascal[i][0] = 1
+    for i in range(1,pascalsize):
+        for j in range(1,pascalsize):
+            pascal[i][j] = pascal[i-1][j] + pascal[i][j-1]
+    for i in range(pascalsize):
+        for j in range(pascalsize):
+            assert binom_coeff(i+j, i) == pascal[i][j]
+            assert binom_coeff(i+j, j) == pascal[i][j]
     #
     print('passed all tests')
 
