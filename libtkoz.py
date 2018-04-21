@@ -79,6 +79,45 @@ def binom_coeff(n, k): # computes binomial coefficient
         result //= i+1
     return result
 
+# based on divisors1 function, sums all divisors
+def sum_divisors1(n): # requires sqrt(n) time
+    assert n > 0
+    if n == 1: return 1
+    count = 1+n # 1 and n
+    for d in range(2, int(math.sqrt(n))+1):
+        if n % d == 0:
+            count += d + n//d
+    if is_square(n): # its square was root counted twice
+        count -= int(math.sqrt(n))
+    return count
+
+# sum divisors with formula
+# if n = p^a * q^b * ... then the divisor sum is
+# (p^0+...+p^a)*(q^0+...+q^b)*... = product of (p^a-1)/(p-1) for primes p
+def sum_divisors2(n):
+    assert n > 0
+    total = 1 # will be multiplied by counting prime factors
+    factors = 0
+    while n % 2 == 0: # factors of 2
+        factors += 1
+        n //= 2
+    if factors != 0:
+        total *= (2**(factors+1) - 1) # /(2-1) is just 1
+    d = 3 # loop over possible odd factors
+    while d * d <= n: # d < square root, n will get smaller so calculate this
+        if n % d != 0:
+            d += 2
+            continue
+        factors = 1
+        n //= d
+        while n % d == 0:
+            n //= d
+            factors += 1
+        total *= (d**(factors+1) - 1) // (d-1)
+        d += 2
+    if n == 1: return total # all factors divided out
+    else: return total * (n+1) # remaining value is a prime factor
+
 # some tests for these functions to check that they work properly
 if __name__ == '__main__':
     assert not prime(1) and prime(2) and prime(3)
@@ -111,6 +150,7 @@ if __name__ == '__main__':
     #
     for p in list_primes1(200):
         assert divisors1(p) == 2
+        assert sum_divisors1(p) == p + 1
     assert divisors1(72) == 12
     assert divisors1(9) == 3 and divisors1(289) == 3
     assert divisors1(64) == 7 and divisors1(4294967296) == 33
@@ -119,11 +159,21 @@ if __name__ == '__main__':
     #
     for p in list_primes1(200):
         assert divisors2(p) == 2
+        assert sum_divisors2(p) == p + 1
     assert divisors2(72) == 12
     assert divisors2(9) == 3 and divisors2(289) == 3
     assert divisors2(64) == 7 and divisors2(4294967296) == 33
     assert divisors2(2*2*5*7*11*11*11) == 3 * 2 * 2 * 4
     assert divisors2(1) == 1
+    #
+    assert sum_divisors1(72) == (1+2+4+8)*(1+3+9) == sum_divisors2(72)
+    assert sum_divisors1(9) == 1+3+9 == sum_divisors2(9)
+    assert sum_divisors1(729) == 1+3+9+27+81+243+729 == sum_divisors2(729)
+    assert sum_divisors1(289) == 1+17+289 == sum_divisors2(289)
+    assert sum_divisors1(64) == 127 == sum_divisors2(64)
+    assert sum_divisors1(2*2*5*7*11**3) == (1+2+4)*(1+5)*(1+7)*(1+11+121+1331)
+    assert sum_divisors2(2*2*5*7*11**3) == (1+2+4)*(1+5)*(1+7)*(1+11+121+1331)
+    assert sum_divisors1(1) == 1 and sum_divisors2(1) == 1
     #
     pascalsize = 50
     pascal = [] # generate pascal triangle (square)
