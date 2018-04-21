@@ -69,11 +69,7 @@ def binom_coeff(n, k): # computes binomial coefficient
     assert n >= k >= 0
     num = n # for n, n-1, ..., 1
     result = 1 # this works because n consecutive integers is divisible by n!
-    for i in range(k):
-        result *= num
-        num -= 1
-        result //= i+1
-    for i in range(n-k):
+    for i in range(min(k, n-k)):
         result *= num
         num -= 1
         result //= i+1
