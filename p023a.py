@@ -2,7 +2,7 @@ import libtkoz as lib
 
 largest = 28123 # everything larger known to be sum of 2 abundants
 
-# this is pretty much a brute force solution, takes ~3 sec in 2018
+# this is pretty much a brute force solution, takes ~3 sec (i7-7600u)
 
 def abundant(n): # proper divisor sum
     return lib.sum_divisors2(n) - n > n

@@ -4,10 +4,10 @@ width = 20
 height = 20
 
 # too large to solve by brute force, dynamic programming
-# directiot is left and up for this array
+# direction is left and up for this array
 # 0 1 2 ...
 # 1 .
-# 2  .
+# 2   .
 grid = [[0] * (width+1)] * (height+1)
 grid[0] = [1] * (width+1) # 1 path starting from top row
 for i in range(height+1):

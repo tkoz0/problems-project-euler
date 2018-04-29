@@ -2,7 +2,7 @@
 maxdiv = 20
 
 # brute force, increments in largest
-# in 2018, takes ~10 sec
+# takes ~10 sec (i7-7600u)
 n = 0
 while True:
     n += maxdiv

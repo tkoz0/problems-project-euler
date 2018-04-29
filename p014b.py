@@ -1,7 +1,7 @@
 
 limit = 1000000
 
-# improved, use a cache to speed up sequence length calculation, ~1 sec in 2018
+# improved, cache to speed up sequence length calculation, ~1 sec (i7-7600u)
 # once reaching a previous calculated number, its sequence length can be used
 # index i --> sequence length starting at i
 cache = [0, 1] # 0 --> length 0, 1 --> length 1

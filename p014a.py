@@ -1,7 +1,7 @@
 
 limit = 1000000
 
-# simple brute force solution, ~15 sec in 2018
+# simple brute force solution, ~15 sec (i7-7600u)
 def seq_len(a):
     l = 1
     while a != 1:

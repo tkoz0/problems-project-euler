@@ -1,7 +1,7 @@
 MAXV = 4000000
 
 # trivial recursive fibonacci, exponential time
-# takes a few seconds on a modern computer (as of 2018)
+# takes a few seconds (i7-7600u)
 def fib(n):
     if n == 0: return 0
     if n == 1: return 1
