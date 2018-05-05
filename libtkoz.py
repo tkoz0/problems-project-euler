@@ -21,6 +21,22 @@ def list_primes1(n): # takes n*sqrt(n) time
             primes.append(p)
     return primes
 
+# uses a sieve, based on solution from p010
+def list_primes2(n):
+    if n < 2: return []
+    primes = [2]
+    sievesize = (n+1) // 2 # last index has largest odd, index i means 2i+1
+    sieve = [True] * sievesize
+    # loop for odds up to square root
+    for nn in range(3, int(math.sqrt(n))+1, 2):
+        i = nn//2 + nn # initial cross off index, represents 3*(2*i+1)
+        while i < sievesize:
+            sieve[i] = False
+            i += nn # increment in n which increases number by 2n (cross off odds)
+    for i in range(1, sievesize):
+        if sieve[i]: primes.append(2*i+1)
+    return primes
+
 def gcd_euclid(m, n):
     assert m >= n > 0
     while m % n != 0:
@@ -131,8 +147,13 @@ if __name__ == '__main__':
     assert not palindrome(15752) and not palindrome(832348)
     #
     assert list_primes1(1) == [] and list_primes1(2) == [2]
+    assert list_primes2(1) == [] and list_primes2(2) == [2]
     assert list_primes1(20) == [2, 3, 5, 7, 11, 13, 17, 19]
+    assert list_primes2(20) == [2, 3, 5, 7, 11, 13, 17, 19]
     assert len(list_primes1(104742)) == 10000
+    assert len(list_primes1(104743)) == 10001
+    assert len(list_primes2(104742)) == 10000
+    assert len(list_primes2(104743)) == 10001
     #
     assert gcd_euclid(2, 1) == 1
     assert gcd_euclid(73, 73) == 73
