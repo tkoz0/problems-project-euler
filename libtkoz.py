@@ -12,6 +12,10 @@ def prime(n): # requires sqrt(n) time
 def palindrome(x):
     return str(x) == str(x)[::-1]
 
+def palindrome_base2(x):
+    xx = '{0:b}'.format(x)
+    return xx == xx[::-1]
+
 # makes a list of primes from 2 to n (inclusive)
 # slow, tests every prime
 def list_primes1(n): # takes n*sqrt(n) time
@@ -145,6 +149,12 @@ if __name__ == '__main__':
     assert not palindrome(23) and not palindrome(37)
     assert palindrome(15751) and palindrome(843348)
     assert not palindrome(15752) and not palindrome(832348)
+    #
+    assert palindrome_base2(1)
+    assert palindrome_base2(3)
+    assert palindrome_base2(73)
+    assert palindrome_base2(2**9+1 + 2**6+8)
+    assert palindrome_base2(2**8 + 2**4 + 2**0)
     #
     assert list_primes1(1) == [] and list_primes1(2) == [2]
     assert list_primes2(1) == [] and list_primes2(2) == [2]
