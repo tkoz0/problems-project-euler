@@ -13,6 +13,6 @@ for p in range(3, maxperim+1):
             c = p - a - b
             if a**2 + b**2 == c**2: solutions += 1
     if solutions > mostsol:
-        print(': better perimeter', p)
+        print(': better perimeter', p, 'has', solutions, 'solutions')
         mostsol, bestnum = solutions, p
 print(bestnum)
