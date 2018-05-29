@@ -1,4 +1,5 @@
 import math
+from encodings.punycode import digits
 
 def prime(n): # requires sqrt(n) time
     if n < 2: return False;
@@ -134,6 +135,11 @@ def sum_divisors2(n):
     if n == 1: return total # all factors divided out
     else: return total * (n+1) # remaining value is a prime factor
 
+def digits_in(n):
+    if n == 0: return 1
+    if n < 0: n = -n
+    return int(math.log10(n)) + 1
+
 # some tests for these functions to check that they work properly
 if __name__ == '__main__':
     assert not prime(1) and prime(2) and prime(3)
@@ -201,6 +207,13 @@ if __name__ == '__main__':
     assert sum_divisors1(2*2*5*7*11**3) == (1+2+4)*(1+5)*(1+7)*(1+11+121+1331)
     assert sum_divisors2(2*2*5*7*11**3) == (1+2+4)*(1+5)*(1+7)*(1+11+121+1331)
     assert sum_divisors1(1) == 1 and sum_divisors2(1) == 1
+    #
+    assert digits_in(0) == 1
+    for i in range(1, 10): assert digits_in(i) == 1
+    for i in range(10, 100): assert digits_in(i) == 2
+    for i in range(100, 1000): assert digits_in(i) == 3
+    assert digits_in(-6) == digits_in(6)
+    assert digits_in(-73) == digits_in(73)
     #
     pascalsize = 50
     pascal = [] # generate pascal triangle (square)
