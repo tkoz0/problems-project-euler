@@ -85,6 +85,21 @@ def divisors2(n):
     if n == 1: return total # all factors divided out
     else: return total * 2 # remaining value is a prime factor
 
+# produce list of factors
+def prime_factorization(n):
+    result = []
+    while n % 2 == 0:
+        n //= 2
+        result.append(2)
+    d = 3
+    while d * d <= n:
+        while n % d == 0:
+            n //= d
+            result.append(d)
+        d += 2
+    if n != 1: result.append(n) # last remaining prime factor
+    return result
+
 def binom_coeff(n, k): # computes binomial coefficient
     assert n >= k >= 0
     num = n # for n, n-1, ..., 1
@@ -205,6 +220,16 @@ if __name__ == '__main__':
     assert divisors2(64) == 7 and divisors2(4294967296) == 33
     assert divisors2(2*2*5*7*11*11*11) == 3 * 2 * 2 * 4
     assert divisors2(1) == 1
+    #
+    for i in range(1, 100):
+        if i == 1: assert prime_factorization(i) == []
+        if prime(i): assert len(prime_factorization(i)) == 1
+        assert prime_factorization(15) == [3, 5]
+        assert prime_factorization(77) == [7, 11]
+        assert prime_factorization(72) == [2, 2, 2, 3, 3]
+        assert prime_factorization(64) == [2] * 6
+        assert prime_factorization(81) == [3] * 4
+        assert prime_factorization(210) == [2, 3, 5, 7]
     #
     assert sum_divisors1(72) == (1+2+4+8)*(1+3+9) == sum_divisors2(72)
     assert sum_divisors1(9) == 1+3+9 == sum_divisors2(9)
