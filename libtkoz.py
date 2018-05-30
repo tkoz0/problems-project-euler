@@ -49,7 +49,6 @@ def gcd_euclid(m, n):
     return n
 
 def is_square(n):
-    assert n >= 0
     s = int(math.sqrt(n))
     return s**2 == n
 
@@ -144,6 +143,10 @@ def is_triangle(x):
     n = int(math.sqrt(2*x))
     return n**2 + n == 2*x
 
+def is_pentagonal(x):
+    n = 1 + math.floor(math.sqrt(2*x/3))
+    return 2*x == 3*(n**2) - n
+
 # some tests for these functions to check that they work properly
 if __name__ == '__main__':
     assert not prime(1) and prime(2) and prime(3)
@@ -221,6 +224,9 @@ if __name__ == '__main__':
     #
     for i in range(100):
         assert is_triangle(i) == (i in [0,1,3,6,10,15,21,28,36,45,55,66,78,91])
+    #
+    for i in range(150):
+        assert is_pentagonal(i) == (i in [1,5,12,22,35,51,70,92,117,145])
     #
     pascalsize = 50
     pascal = [] # generate pascal triangle (square)
