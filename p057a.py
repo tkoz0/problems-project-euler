@@ -16,8 +16,12 @@ n, d = 1, 1 # fraction for approximation, initially x_0
 count = 0
 for itr in range(iterations):
     # compute next iteration by performing operations on x_n-1 to get x_n
-    n += d # add 1
-    n, d = d, n # 1 / (1+x_n-1), multiplicative inverse
-    n += d # add 1 again
+#    n += d # add 1
+#    n, d = d, n # 1 / (1+x_n-1), multiplicative inverse
+#    n += d # add 1 again
+    # new method, if substituting x_n-1 with a_n-1 / b_n-1,
+    # a 2 operation method can be derived to get (a_n-1+2*b_n-1)/(a_n-1+b_n-1)
+    n += 2*d
+    d = n-d
     if digits(n) > digits(d): count += 1 # more digits in numerator
 print(count)
