@@ -1,6 +1,6 @@
 import libtkoz as lib
 
-familysize = 9
+familysize = 8
 # assert familysize in [8, 9, 10]
 
 primecache = lib.list_primes2(100000)
