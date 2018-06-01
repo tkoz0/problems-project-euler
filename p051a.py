@@ -65,10 +65,12 @@ while True:
             for f in range(0 if mask[-1] == 1 else 10**(numlen-num_replaced-1),
                            10**(numlen-num_replaced)): # select fixed digits
                 ff = f
-#                print('    trying fixed digits', list((int(c) for c in str(ff)))[::-1])
+#                print('    trying fixed digits',
+#                      list((int(c) for c in str(ff)))[::-1])
                 if mask[0] == 0 and (ff % 10 not in [1, 3, 7, 9]): continue
                 # none will be prime if digit sums are divisible by 3
-                if num_replaced % 3 == 0 and sum(int(c) for c in str(ff)) % 3 == 0: continue
+                if num_replaced % 3 == 0 and \
+                    sum(int(c) for c in str(ff)) % 3 == 0: continue
                 add_amt = 0
                 for i in range(numlen): # setup digits
                     if mask[i] == 0:
