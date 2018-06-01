@@ -13,6 +13,9 @@ def prime(n): # requires sqrt(n) time
 def palindrome(x):
     return str(x) == str(x)[::-1]
 
+def sum_digits(x):
+    return sum(int(d) for d in str(x))
+
 def palindrome_base2(x):
     xx = '{0:b}'.format(x)
     return xx == xx[::-1]
@@ -183,6 +186,10 @@ if __name__ == '__main__':
     assert palindrome_base2(73)
     assert palindrome_base2(2**9+1 + 2**6+8)
     assert palindrome_base2(2**8 + 2**4 + 2**0)
+    #
+    for i in range(10): assert sum_digits(i) == i
+    for i in range(11,100,11): assert sum_digits(i) == (i//11)*2
+    assert sum_digits(123456789) == 45
     #
     assert list_primes1(1) == [] and list_primes1(2) == [2]
     assert list_primes2(1) == [] and list_primes2(2) == [2]
