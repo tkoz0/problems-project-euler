@@ -97,7 +97,7 @@ def recurse2(indexes, s): # indexes is for cache2, s is sum of primes
                 break
         if new_are_prime: recurse2(indexes + [nexti], s + primecache2[nexti])
 
-itrmax = 32
+itrmax = 1024 # start here, based on given 4 set, 5 set will have a prime > 673
 while True: # first find a prime pair set
     initialize_caches(itrmax)
     bestsum = itrmax * setsize # larger than any set sum initially
