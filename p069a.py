@@ -10,6 +10,6 @@ for n in range(1, maxn+1):
     if ratio > maxratio:
         maxratio = ratio
         bestn = n
-print(':', n, '/', 'phi(n) =', maxratio)
+print(':', bestn, '/', 'phi(n) =', maxratio)
 print(bestn)
 
