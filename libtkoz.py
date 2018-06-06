@@ -165,6 +165,41 @@ def is_pentagonal(x):
     n = 1 + math.floor(math.sqrt(2*x/3))
     return 2*x == 3*(n**2) - n
 
+# next lexicographic permutation in increasing order
+# true if it advances the list, false if list is already max
+def lexico_next(l):
+    i1 = len(l)-1
+    while i1 != 0 and l[i1-1] >= l[i1]: i1 -= 1 # find break in noninc order
+    i1 -= 1 # index of digit to increase
+    if i1 == -1: return False # already max
+    i2 = len(l)-1
+    while l[i2] <= l[i1]: i2 -= 1 # find smallest larger value
+    l[i1], l[i2] = l[i2], l[i1] # swap, i1+1 to end are now in dec order
+    i1 += 1
+    i2 = len(l)-1
+    while i1 < i2: # sort by swapping
+        l[i1], l[i2] = l[i2], l[i1]
+        i1 += 1
+        i2 -= 1
+    return True
+
+# similar to lexico_next, reverse order, same code with some signs changed
+def lexico_prev(l):
+    i1 = len(l)-1
+    while i1 != 0 and l[i1-1] <= l[i1]: i1 -= 1
+    i1 -= 1
+    if i1 == -1: return False
+    i2 = len(l)-1
+    while l[i2] >= l[i1]: i2 -= 1
+    l[i1], l[i2] = l[i2], l[i1]
+    i1 += 1
+    i2 = len(l)-1
+    while i1 < i2:
+        l[i1], l[i2] = l[i2], l[i1]
+        i1 += 1
+        i2 -= 1
+    return True
+
 # some tests for these functions to check that they work properly
 if __name__ == '__main__':
     assert not prime(1) and prime(2) and prime(3)
@@ -272,6 +307,25 @@ if __name__ == '__main__':
         for j in range(pascalsize):
             assert binom_coeff(i+j, i) == pascal[i][j]
             assert binom_coeff(i+j, j) == pascal[i][j]
+    #
+    lstates = [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+    l = [1,2,3]
+    for i in range(1,6):
+        assert lexico_next(l)
+        assert l == lstates[i]
+    assert not lexico_next(l)
+    lstates = lstates[::-1]
+    for i in range(1,6):
+        assert lexico_prev(l)
+        assert l == lstates[i]
+    assert not lexico_prev(l)
+    l = [7,2,6,5,4,3,1] # --> [7,3,1,2,4,5,6]
+    l2 = [7,2,6,5,4,3,1]
+    l3 = [7,3,1,2,4,5,6]
+    assert lexico_next(l)
+    assert l == l3
+    assert lexico_prev(l)
+    assert l == l2
     #
     print('passed all tests')
 
