@@ -90,6 +90,7 @@ def divisors2(n):
 
 # produce list of factors
 def prime_factorization(n):
+    assert n > 0
     result = []
     while n % 2 == 0:
         n //= 2
@@ -102,6 +103,13 @@ def prime_factorization(n):
         d += 2
     if n != 1: result.append(n) # last remaining prime factor
     return result
+
+# compute euler totient function, how many 1<=a<n are coprime to n
+def totient(n):
+    primes = set(prime_factorization(n))
+    for p in primes: # multiply by 1-1/p = (p-1)/p
+        n = n * (p-1) // p
+    return n
 
 def binom_coeff(n, k): # computes binomial coefficient
     assert n >= k >= 0
@@ -272,6 +280,17 @@ if __name__ == '__main__':
         assert prime_factorization(64) == [2] * 6
         assert prime_factorization(81) == [3] * 4
         assert prime_factorization(210) == [2, 3, 5, 7]
+    #
+    for i in range(2,100): # primes
+        assert prime(i) == (totient(i) == i-1) # totient of primes is n-1
+    for i in range(2,100): # semi primes
+        if not prime(i): continue
+        for j in range(2,100):
+            if not prime(j): continue
+            if i == j: assert totient(i**2) == i*(i-1)
+            else: assert totient(i*j) == (i-1)*(j-1)
+    assert totient(216) == 72 and totient(273) == 144 and totient(430) == 168
+    assert totient(2*2*3*3*5*7) == (2*2*3*3*5*7)*1//2*2//3*4//5*6//7
     #
     assert sum_divisors1(72) == (1+2+4+8)*(1+3+9) == sum_divisors2(72)
     assert sum_divisors1(9) == 1+3+9 == sum_divisors2(9)
