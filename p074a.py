@@ -13,7 +13,7 @@ def next(n): # computes next in chain
         n //= 10
     return s
 
-# compute each chain by brute force, with cache it takes ~35sec (i5-2540m)
+# compute each chain by brute force, with cache it takes ~3sec (i5-2540m)
 # use a cache for finding cycles and solving larger start numbers faster
 cache = [0] * startlim
 cache[0] = 2 # numbers that repeat theirselves (and trivial 0)
@@ -32,6 +32,7 @@ for n in range(3, startlim):
         if cache[n] == chainlen: count += 1
     else: # must find chain length
         nn = n
+        seq = [nn]
         ll = 1
         while True:
             nn = next(nn)
@@ -39,7 +40,11 @@ for n in range(3, startlim):
                 ll += cache[nn]
                 break
             ll += 1 # havent found subchain, continue
+            seq.append(nn)
         if ll == chainlen:
             count += 1
             if shownums: print(':', n)
+        for i,s in enumerate(seq): # add calculations to cache
+            if s < startlim: cache[s] = ll - i
 print(count)
+
