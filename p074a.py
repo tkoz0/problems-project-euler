@@ -4,14 +4,16 @@ startlim = 1000000
 chainlen = 60
 shownums = False # toggle to see satisfying numbers in output
 
+facts = list(math.factorial(x) for x in range(10))
 def next(n): # computes next in chain
     s = 0 # use division since its faster than string conversion stuff
     while n != 0:
-        s += math.factorial(n % 10)
+        # use lookup table for speed, only makes it a little faster
+        s += facts[n % 10]
         n //= 10
     return s
 
-# compute each chain by brute force, with cache it takes ~40sec (i5-2540m)
+# compute each chain by brute force, with cache it takes ~35sec (i5-2540m)
 # use a cache for finding cycles and solving larger start numbers faster
 cache = [0] * startlim
 cache[0] = 2 # numbers that repeat theirselves (and trivial 0)
