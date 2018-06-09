@@ -19,14 +19,11 @@ bestR, bestC = 0, 0
 R = 1
 while True: # continue until with C=1, solutions > contains
     if subrects(R,1) >= contains:
-        # try subrects(R,1) until it cant approximate contains any better
-        while True:
-            value = subrects(R,1)
-            if value-contains < abs(closest-contains):
-                closest = value
-                bestR, bestC = R, 1
-            else: break # subrects(R,1) increases so will not find better approx
-            R += 1
+        # subrects(R,1) only gets larger so try this for better approximation
+        value = subrects(R,1)
+        if value-contains < abs(closest-contains):
+            closest = value
+            bestR, bestC = R, 1
         break
     z = R*(R+1)/4
     C = math.floor(-0.5 + math.sqrt(0.25 + contains/z))
