@@ -1,5 +1,4 @@
 import math
-from encodings.punycode import digits
 
 def prime(n): # requires sqrt(n) time
     if n < 2: return False;
