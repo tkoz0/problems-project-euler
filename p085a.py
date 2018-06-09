@@ -10,6 +10,11 @@ import math
 # zC^2+zC-X=0 --> C=(-1/2)+sqrt(1/4+X/z) (pick positive solution)
 # if no rectangle has X subrectangles, floor(C),ceil(C) give smaller/larger
 
+# the number of subrectangles can also be computed with combinatorics
+# start and end coordinates fit in range [0,R] x [0,C]
+# pick a start and end for each coordinate so (R+1 choose 2)*(C+1 choose 2)
+# this gives the same result
+
 contains = 2000000
 
 subrects = lambda R,C : R*C*(R*C+R+C+1)//4
