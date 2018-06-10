@@ -39,7 +39,7 @@ def list_primes2(n):
         i = nn//2 + nn # initial cross off index, represents 3*(2*i+1)
         while i < sievesize:
             sieve[i] = False
-            i += nn # increment in n which increases number by 2n (cross off odds)
+            i += nn # increment in n, increases number by 2n (cross off odds)
     for i in range(1, sievesize):
         if sieve[i]: primes.append(2*i+1)
     return primes
