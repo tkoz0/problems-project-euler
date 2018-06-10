@@ -3,11 +3,12 @@ import math
 
 limit = 50000000
 
-# brute force by looping over a prime list, ~2sec (i5-2540m)
+# brute force by looping over a prime list, ~1sec (i5-2540m)
 # begin by listing primes up to sqrt(limit)
 primes = lib.list_primes2(int(math.sqrt(limit)))
-# true means the number is expressible as a prime 2nd, 3rd, and 4th power sum
-sieve = [False] * limit
+print(': generated primes up to', int(math.sqrt(limit)))
+sieve = set() # numbers that are expressible as the sum
+# this doubled speed, rather than allocate a length 50 million array
 
 for p2 in range(len(primes)):
     sum2 = primes[p2]**2 # sum the square, wont exceed limit
@@ -17,5 +18,5 @@ for p2 in range(len(primes)):
         for p4 in range(len(primes)):
             sum234 = sum23 + primes[p4]**4
             if sum234 >= limit: break
-            sieve[sum234] = True
-print(sum(1 for v in sieve if v)) # sum true values
+            sieve.add(sum234)
+print(len(sieve))
