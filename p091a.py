@@ -32,5 +32,5 @@ for x in range(1,xmax+1):
         # count going lower right, how many steps until out of bounds
         triangles += min(y//sy, (xmax-x)//sx)
         # count going upper left, steps until out of bounds
-        triangles += min(x//sx, (ymax-x)//sy)
+        triangles += min(x//sx, (ymax-y)//sy)
 print(triangles)
