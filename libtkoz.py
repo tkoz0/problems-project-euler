@@ -45,7 +45,8 @@ def list_primes2(n):
     return primes
 
 def gcd_euclid(m, n):
-    assert m >= n > 0
+    assert m > 0 and n > 0
+    if n > m: m, n = n, m # fix order
     while m % n != 0:
         m, n = n, m % n
     return n
