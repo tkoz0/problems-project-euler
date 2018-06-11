@@ -247,6 +247,9 @@ if __name__ == '__main__':
     assert gcd_euclid(73, 73) == 73
     assert gcd_euclid(2250, 1050) == 150
     assert gcd_euclid(72, 56) == 8 and gcd_euclid(96, 72) == 24
+    for i in range(1,100):
+        for j in range(1,100):
+            assert gcd_euclid(i,j) == gcd_euclid(j,i)
     #
     assert is_square(0) and is_square(1)
     assert is_square(64) and is_square(289)
