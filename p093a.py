@@ -84,16 +84,13 @@ for dset in gen_sets():
             for op2 in range(4):
                 for op3 in range(4):
                     a,b,c,d=dset[0],dset[1],dset[2],dset[3]
-                    nums.add(eval(a+arithexprs[op1]+b+arithexprs[op2]+c+arithexprs[op3]+d))
-                    nums.add(eval('('+a+arithexprs[op1]+b+')'+arithexprs[op2]+c+arithexprs[op3]+d))
-                    nums.add(eval('('+a+arithexprs[op1]+b+arithexprs[op2]+c+')'+arithexprs[op3]+d))
-                    nums.add(eval('(('+a+arithexprs[op1]+b+')'+arithexprs[op2]+c+')'+arithexprs[op3]+d))
-                    nums.add(eval('('+a+arithexprs[op1]+'('+b+arithexprs[op2]+c+'))'+arithexprs[op3]+d))
-                    nums.add(eval(a+arithexprs[op1]+'('+b+arithexprs[op2]+c+')'+arithexprs[op3]+d))
-                    nums.add(eval(a+arithexprs[op1]+'('+b+arithexprs[op2]+c+arithexprs[op3]+d+')'))
-                    nums.add(eval(a+arithexprs[op1]+'(('+b+arithexprs[op2]+c+')'+arithexprs[op3]+d+')'))
-                    nums.add(eval(a+arithexprs[op1]+'('+b+arithexprs[op2]+'('+c+arithexprs[op3]+d+'))'))
-                    nums.add(eval(a+arithexprs[op1]+b+arithexprs[op2]+'('+c+arithexprs[op3]+d+')'))
+                    # use parenthesis ignoring symmetry since that is considered
+                    # by all possible operator orders and digit permutations
+                    nums.add(eval(make_expr('(',a,op1,b,')',op2,c,op3,d)))
+                    nums.add(eval(make_expr(a,op1,'(',b,op2,c,')',op3,d)))
+                    nums.add(eval(make_expr('(',a,op1,b,op2,c,')',op3,d)))
+                    nums.add(eval(make_expr('(',a,op1,b,')',op2,'(',c,op3,d,')')))
+                    nums.add(eval(make_expr(a,op1,b,op2,c,op3,d)))
         if not lib.lexico_next(dset): break
     nums2 = set() # use integer values for everything
     for n in nums:
