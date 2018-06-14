@@ -51,7 +51,7 @@ def force_numbers(p):
             for n in range(1,10):
                 if in_col(p,c,n): continue
                 rows = []
-                for br in range(3): # find rows where n can be placed it the column
+                for br in range(3): # find rows where n can be placed
                     if in_box(p,br,c//3,n): continue
                     for r in range(3*br,3*br+3):
                         if p[r][c] != 0: continue
@@ -80,61 +80,10 @@ def force_numbers(p):
     # solved if no zeroes, return changes to board
     return (True,changes) # true means no contradiction was found
 
-############ NEED TO CHECK / REDO (BEGIN) ############False
-
-def place_num(p,m,r,c,n): # places number and updates markup
-    assert m[r][c] == set([n])
-    p[r][c] = n
-    for rr in range(9): # update markup in cells than cannot have n
-        if n in m[rr][c]: m[rr][c].remove(n)
-    for cc in range(9):
-        if n in m[r][cc]: m[r][cc].remove(n)
-    br, bc = r//3, c//3
-    for rr in range(3*br,3*br+3):
-        for cc in range(3*bc,3*bc+3):
-            if n in m[rr][cc]: m[rr][cc].remove(n)
-
-def preemptive_sets(p): # solve with crook's algorithm (preemptive set method)
-    m = list(list(set() for c in range(9)) for r in range(9)) # generate markup
-    rempty, cempty = [0]*9, [0]*9 # number empty in each row and column
-    bempty = list([0,0,0] for i in range(3)) # number empty in each box
-    for r in range(9):
-        for c in range(9):
-            if p[r][c] != 0: continue # no preemptive set for nonempty cells
-            rempty[r] += 1
-            cempty[c] += 1
-            bempty[r//3][c//3] += 1
-            for n in range(1,10): # find possible placement numbers
-                if in_row(p,r,n) or in_col(p,c,n) or in_box(p,r//3,c//3,n):
-                    continue
-                m[r][c].add(n)
-    ######## FIX BELOW ########
-    changes = []
-    changed = True
-    while changed:
-        changed = False
-        for r in range(9): # place numbers from preemptive set size 1
-            for c in range(9):
-                if p[r][c] != 0: continue
-                if len(m[r][c]) == 0: return False # cant solve
-        for r in range(9): # try sets for each row
-            pass
-        for c in range(9): # try sets for each column
-            pass
-        for br in range(3): # try sets for each box
-            for bc in range(3):
-                pass
-    return set((0 in r) for r in p) == set([False]) # solved if no zeroes
-
-############ NEED TO CHECK / REDO (END) ###############
-
 def filled(p):
     return set((0 in r) for r in p) == set([False]) # no zeroes
 
-def count_zeroes(p):
-    return sum(sum(1 for c in r if c == 0) for r in p)
-
-def solve(p,depth): # use logic, make guesses on recursive search paths if needed
+def solve(p,depth): # use logic, make guesses on recursive search paths
     result1 = force_numbers(p)
     if filled(p): return True # solved
     if result1[0] is True: # successful in logic progress, guess recursively
