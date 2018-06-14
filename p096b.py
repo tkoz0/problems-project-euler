@@ -30,20 +30,6 @@ def force_numbers(p): # solve with typical logic
     changed = True
     while changed: # loop until puzzle doesnt change
         changed = False
-        # preemtive sets with size 1 (beg)
-#        for r in range(9):
-#            for c in range(9):
-#                if p[r][c] != 0: continue
-#                canplace = []
-#                for n in range(1,10):
-#                    if in_row(p,r,n) or in_col(p,c,n) or in_box(p,r//3,c//3,n):
-#                        continue
-#                    canplace.append(n)
-#                if len(canplace)==0: return False
-#                if len(canplace)==1:
-#                    p[r][c]=canplace[0]
-#                    changed=True
-        # preemptive sets with size 1 (end)
         for r in range(9): # find numbers forced into rows
             for n in range(1,10): # try each number not in the row
                 if in_row(p,r,n): continue
@@ -88,6 +74,18 @@ def force_numbers(p): # solve with typical logic
                         changed = True
     return set((0 in r) for r in p) == set([False]) # solved if no zeroes
 
+def place_num(p,m,r,c,n): # places number and updates markup
+    assert m[r][c] == set([n])
+    p[r][c] = n
+    for rr in range(9): # update markup in cells than cannot have n
+        if n in m[rr][c]: m[rr][c].remove(n)
+    for cc in range(9):
+        if n in m[r][cc]: m[r][cc].remove(n)
+    br, bc = r//3, c//3
+    for rr in range(3*br,3*br+3):
+        for cc in range(3*bc,3*bc+3):
+            if n in m[rr][cc]: m[rr][cc].remove(n)
+
 def preemptive_sets(p): # solve with crook's algorithm (preemptive set method)
     m = list(list(set() for c in range(9)) for r in range(9)) # generate markup
     rempty, cempty = [0]*9, [0]*9 # number empty in each row and column
@@ -104,7 +102,13 @@ def preemptive_sets(p): # solve with crook's algorithm (preemptive set method)
                 m[r][c].add(n)
     changed = True
     while changed:
-        pass
+        for r in range(9): # try sets for each row
+            pass
+        for c in range(9): # try sets for each column
+            pass
+        for br in range(3): # try sets for each box
+            for bc in range(3):
+                pass
         changed = False
     return set((0 in r) for r in p) == set([False]) # solved if no zeroes
 
@@ -128,5 +132,3 @@ for i,p in enumerate(puzzles):
 #    print('result',result)
     print('puzzle',i+1,result)
 print('solved',solvecount)
-
-
