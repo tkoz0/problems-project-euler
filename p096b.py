@@ -155,7 +155,7 @@ def solve(p,depth): # use logic, make guesses on recursive search paths if neede
                     if solve(p,depth+1): return True
                 p[r][c] = 0 # backtrack (none of these search paths worked)
                 done = True
-                break
+                break # no valid guess makes valid solution, unsolvable
     # undo changes (backtrack) (if guessing fails or logic found contradiction)
     for change in result1[1]: p[change[0]][change[1]] = 0 # reset changed cells
     return False # unable to find solution path starting from here
