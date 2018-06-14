@@ -26,7 +26,9 @@ def in_box(p,r,c,n):
             if p[rr][cc] == n: return True
     return False
 
-def force_numbers(p): # solve with typical logic
+# solve with typical logic, return (contradiction boolean, list of changes)
+def force_numbers(p):
+    changes = []
     changed = True
     while changed: # loop until puzzle doesnt change
         changed = False
@@ -40,9 +42,10 @@ def force_numbers(p): # solve with typical logic
                         if p[r][c] != 0: continue # not empty
                         if in_col(p,c,n): continue # not valid column for n
                         cols.append(c)
-                if len(cols) == 0: return False # cant solve
+                if len(cols) == 0: return (False,changes) # cant solve
                 if len(cols) == 1:
                     p[r][cols[0]] = n # successful placement
+                    changes.append((r,cols[0],n))
                     changed = True
         for c in range(9): # find numbers forced into columns
             for n in range(1,10):
@@ -54,9 +57,10 @@ def force_numbers(p): # solve with typical logic
                         if p[r][c] != 0: continue
                         if in_row(p,r,n): continue
                         rows.append(r)
-                if len(rows) == 0: return False # unsolvable
+                if len(rows) == 0: return (False,changes) # unsolvable
                 if len(rows) == 1:
                     p[rows[0]][c] = n # only 1 space for n
+                    changes.append((rows[0],c,n))
                     changed = True
         for br in range(3): # find numbers forced into boxes
             for bc in range(3):
@@ -68,11 +72,15 @@ def force_numbers(p): # solve with typical logic
                             if p[r][c] != 0: continue
                             if in_row(p,r,n) or in_col(p,c,n): continue
                             locs.append((r,c))
-                    if len(locs) == 0: return False
+                    if len(locs) == 0: return (False,changes)
                     if len(locs) == 1:
                         p[locs[0][0]][locs[0][1]] = n
+                        changes.append((locs[0][0],locs[0][1],n))
                         changed = True
-    return set((0 in r) for r in p) == set([False]) # solved if no zeroes
+    # solved if no zeroes, return changes to board
+    return (True,changes) # true means no contradiction was found
+
+############ NEED TO CHECK / REDO (BEGIN) ############False
 
 def place_num(p,m,r,c,n): # places number and updates markup
     assert m[r][c] == set([n])
@@ -100,8 +108,15 @@ def preemptive_sets(p): # solve with crook's algorithm (preemptive set method)
                 if in_row(p,r,n) or in_col(p,c,n) or in_box(p,r//3,c//3,n):
                     continue
                 m[r][c].add(n)
+    ######## FIX BELOW ########
+    changes = []
     changed = True
     while changed:
+        changed = False
+        for r in range(9): # place numbers from preemptive set size 1
+            for c in range(9):
+                if p[r][c] != 0: continue
+                if len(m[r][c]) == 0: return False # cant solve
         for r in range(9): # try sets for each row
             pass
         for c in range(9): # try sets for each column
@@ -109,26 +124,44 @@ def preemptive_sets(p): # solve with crook's algorithm (preemptive set method)
         for br in range(3): # try sets for each box
             for bc in range(3):
                 pass
-        changed = False
     return set((0 in r) for r in p) == set([False]) # solved if no zeroes
 
-def solve(p): # use logic, make guesses on recursive search paths if needed
-    if force_numbers(p) is True: return True
-    if preemptive_sets(p) is True: return True
-    # for n in guesses: # pick cell with smallest preemptive set size
-    #   place n in p
-    #   if solve(p) is True: return True
-    # backtrack (replace n with 0)
-    return False
+############ NEED TO CHECK / REDO (END) ###############
 
-solvecount = 0
+def filled(p):
+    return set((0 in r) for r in p) == set([False]) # no zeroes
+
+def count_zeroes(p):
+    return sum(sum(1 for c in r if c == 0) for r in p)
+
+def solve(p,depth): # use logic, make guesses on recursive search paths if needed
+    result1 = force_numbers(p)
+    if filled(p): return True # solved
+    if result1[0] is True: # successful in logic progress, guess recursively
+        done = False
+        for r in range(9):
+            if done: break
+            for c in range(9): # find empty cell
+                if p[r][c] != 0: continue
+                nums = [True]*10 # find possible numbers (true)
+                for rr in range(9): nums[p[rr][c]] = False
+                for cc in range(9): nums[p[r][cc]] = False
+                for rr in range(3*(r//3),3*(r//3)+3):
+                    for cc in range(3*(c//3),3*(c//3)+3):
+                        nums[p[rr][cc]] = False
+                for n in range(1,10): # try each possible number
+                    if not nums[n]: continue
+                    p[r][c] = n
+                    if solve(p,depth+1): return True
+                p[r][c] = 0 # backtrack (none of these search paths worked)
+                done = True
+                break
+    # undo changes (backtrack) (if guessing fails or logic found contradiction)
+    for change in result1[1]: p[change[0]][change[1]] = 0 # reset changed cells
+    return False # unable to find solution path starting from here
+
+total = 0
 for i,p in enumerate(puzzles):
-#    print('puzzle',i+1)
-#    for r in p: print(r)
-    result = force_numbers(p)
-    if result: solvecount += 1
-#    print('--')
-#    for r in p: print(r)
-#    print('result',result)
-    print('puzzle',i+1,result)
-print('solved',solvecount)
+    print(': puzzle',i+1,solve(p,0))
+    total += 100*p[0][0]+10*p[0][1]+p[0][2]
+print(total)
