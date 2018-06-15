@@ -26,6 +26,7 @@ for ws in wordsets: print(':',ws) # wordsets is a list of each wordset as a list
 
 squares = dict()
 mostdigits = 0
+# updates a dictionary mapping sorted digit string to anagramic square numbers
 def gen_anagram_squares(digits):
     global squares, mostdigits
     if digits <= mostdigits: return # no need to generate more squares
@@ -48,6 +49,7 @@ def find_max_square(ws): # search anagramic words for largest square
         w1 = ws[w1]
         for w2 in range(w1i+1,len(ws)):
             w2 = ws[w2]
+            # for each anagramic word pair, try the anagramic square sets
             for k,v in squares.items():
                 if len(k) != len(ws[0]): continue # squares must be same length
                 for sq in v: # pick a square for w1
@@ -75,6 +77,7 @@ def find_max_square(ws): # search anagramic words for largest square
 
 maxsq = 0
 for ws in wordsets: # assume sorted in decreasing word length
+    if 10**len(ws[0]) < maxsq: break # cant make larger square
     values = find_max_square(ws)
     print(ws,find_max_square(ws))
     if max(values[:2]) > maxsq: maxsq = max(values[:2])
