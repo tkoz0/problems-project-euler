@@ -23,4 +23,5 @@ while True: # iterate pell solution based on p066
         x, y = (b+1) // 2, (a+1) // 2
         if y > exceeddiscs: break # y is number of discs
         largestblue = x # x is number of blue discs
+        print(': blue =', x, ', red =', y-x)
 print(x)
