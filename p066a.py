@@ -3,6 +3,7 @@ import math
 
 maxD = 1000
 showminx = False # toggle to show/hide some output
+showkcycle = False
 
 # diophantine equations x^2 - D * y^2 = 1
 # no solutions if D is a perfect square, find minimal x
@@ -14,6 +15,7 @@ for D in range(2, maxD+1):
     # chakravala method, starting values
     a, b = int(math.floor(math.sqrt(D))), 1
     k = a**2 - D
+    kcycle = [k]
     while k != 1: # eventually terminates with k=1, solution to pells equation
         # pick m congruent to -a (mod k), m <= floor(sqrt(D)) < m+abs(k)
         m = 0 # find with a loop
@@ -28,7 +30,9 @@ for D in range(2, maxD+1):
         assert (a + b*m) % absk == 0
         assert (m**2 - D) % absk == 0
         a, b, k = (a*m + D*b) // abs(k), (a + b*m) // abs(k), (m**2 - D) // k
+        kcycle.append(k)
     if showminx: print(': for D =', D, ', min x =', a)
+    if showkcycle: print(': for D =', D, kcycle)
     if a > largestminx: largestminx, bestD = a, D
 print(bestD)
 
