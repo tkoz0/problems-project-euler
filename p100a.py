@@ -1,5 +1,3 @@
-import libtkoz as lib
-import math
 
 exceeddiscs = 10**12
 
