@@ -13,7 +13,11 @@ def palindrome(x):
     return str(x) == str(x)[::-1]
 
 def sum_digits(x):
-    return sum(int(d) for d in str(x))
+    s = 0
+    while x != 0:
+        x, d = divmod(x,10)
+        s += d
+    return s
 
 def palindrome_base2(x):
     xx = '{0:b}'.format(x)
