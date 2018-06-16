@@ -21,6 +21,7 @@ print(': generated grid')
 
 # search each line efficiently, create a sum and reset it to 0 when it becomes
 # negative, a negative component will count against the sum
+# takes a while ~15sec (i5-2540m) due to large size of grid
 
 def search_line(indexes): # given range object, search this line
     global grid, side
