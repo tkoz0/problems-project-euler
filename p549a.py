@@ -28,25 +28,3 @@ for p in range(2,smax+1): # pick a prime
         pp += p # go to next multiple
         m += lcount(lib.prime_factorization(pp),p) # count multiplicity in pp
 print(sum(sieve))
-quit()
-
-def s(n): # finds min m such that n | m!
-    factors = lib.prime_factorization(n)
-    fcounts = dict() # count multiplicity of each prime factor
-    minnum = dict() # min m such that p^multiplicify | m! for each prime factor
-    for f in factors:
-        if not f in fcounts:
-            fcounts[f] = 0
-            minnum[f] = 0
-        fcounts[f] += 1
-    for f,c in fcounts.items():
-        ff = f # for multiples of f, count f multiplicity until reach fcounts[f]
-        counted = 1
-        while counted < c:
-            ff += f
-            counted += lcount(lib.prime_factorization(ff),f)
-        minnum[f] = ff # highest multiple needed to have required factors
-    return max(minnum.values())
-
-for a in range(2,100+1): print(a,s(a))
-print(sum(s(n) for n in range(2,smax+1)))
