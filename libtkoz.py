@@ -19,6 +19,11 @@ def sum_digits(x):
         s += d
     return s
 
+def digital_root(x):
+    x = sum_digits(x)
+    while x >= 10: x = sum_digits(x)
+    return x
+
 def palindrome_base2(x):
     xx = '{0:b}'.format(x)
     return xx == xx[::-1]
@@ -237,6 +242,9 @@ if __name__ == '__main__':
     for i in range(10): assert sum_digits(i) == i
     for i in range(11,100,11): assert sum_digits(i) == (i//11)*2
     assert sum_digits(123456789) == 45
+    #
+    assert digital_root(467) == 8
+    assert digital_root(9999999999999994) == 4 # 139 --> 13 --> 4
     #
     assert list_primes1(1) == [] and list_primes1(2) == [2]
     assert list_primes2(1) == [] and list_primes2(2) == [2]
