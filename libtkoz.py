@@ -9,8 +9,7 @@ def prime(n): # requires sqrt(n) time
             return False
     return True
 
-def palindrome(x):
-    return str(x) == str(x)[::-1]
+def palindrome(x): return str(x) == str(x)[::-1]
 
 def sum_digits(x):
     s = 0
@@ -20,9 +19,8 @@ def sum_digits(x):
     return s
 
 def digital_root(x):
-    x = sum_digits(x)
-    while x >= 10: x = sum_digits(x)
-    return x
+    assert x > 0
+    return 1 + (x-1)%9
 
 def palindrome_base2(x):
     xx = '{0:b}'.format(x)
@@ -60,9 +58,7 @@ def gcd_euclid(m, n):
         m, n = n, m % n
     return n
 
-def is_square(n):
-    s = int(math.sqrt(n))
-    return s**2 == n
+def is_square(n): return (int(math.sqrt(n)))**2 == n
 
 # slow loop for counting divisors, finds each factor
 def divisors1(n): # requires sqrt(n) time
