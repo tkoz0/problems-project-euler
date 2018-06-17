@@ -4,7 +4,7 @@ import math
 setsize = 5 # number of primes in prime pair set
 assert setsize >= 2
 
-# changing the cache method made it significantly faster, ~45sec (i5-2540m)
+# changing the cache method made it significantly faster, ~15sec (i5-2540m)
 # since the caches took so long to generate and pairs of primes that concatenate
 # to primes both ways are relatively rare its probably more effective to test
 # the concatenations during the recursion instead of generating all of them when
@@ -15,8 +15,8 @@ paircache = dict()
 def concat_primes(a, b): # are ab and ba (concatenations) prime
     global paircache
     if (a,b) in paircache: return paircache[(a,b)]
-    result = lib.prime(a*(10**(1+int(math.log10(b))))+b) and \
-             lib.prime(b*(10**(1+int(math.log10(a))))+a)
+    result = lib.miller_rabin_verified(a*(10**(1+int(math.log10(b))))+b) and \
+             lib.miller_rabin_verified(b*(10**(1+int(math.log10(a))))+a)
     paircache[(a,b)] = result
     return result
 
