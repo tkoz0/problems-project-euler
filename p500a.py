@@ -64,7 +64,6 @@ for p in pgen(): # prime generator
     while True:
         nextmultiply = pq.next_multiply()
         numpicked += 1
-        if numpicked%1000==0:print(': picked',numpicked)
         result = (result * nextmultiply) % modulus
         if numpicked == factorsexp: break
         if nextmultiply == p: break # squared last prime, must generate another
