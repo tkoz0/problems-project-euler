@@ -1,4 +1,3 @@
-import libtkoz as lib
 
 smax = 10**8
 
