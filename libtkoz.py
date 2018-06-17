@@ -9,6 +9,44 @@ def prime(n): # requires sqrt(n) time
             return False
     return True
 
+def miller_rabin_verified(n): # miller rabin test
+    if n < 2: return False
+    if n == 2: return True
+    if n % 2 == 0: return False # n is now odd integer > 1
+    d = n-1
+    s = 0
+    while d % 2 == 0: # n-1 = 2^s * d
+        s += 1
+        d //= 2
+    # select set of a values to test based on verified results (wikipedia)
+    A = []
+    if n < 2047: A = [2]
+    elif n < 1373653: A = [2,3]
+    elif n < 9080191: A = [31,73]
+    elif n < 25326001: A = [2,3,5]
+    elif n < 3215031751: A = [2,3,5,7]
+    elif n < 4759123141: A = [2,7,61]
+    elif n < 1122004669633: A = [2,13,23,1662803]
+    elif n < 2152302898747: A = [2,3,5,7,11]
+    elif n < 3474749660383: A = [2,3,5,7,11,13]
+    elif n < 341550071728321: A = [2,3,5,7,11,13,17]
+    elif n < 3825123056546413051: A = [2,3,5,7,11,13,17,19,23]
+#    elif n < 18446744073709551616: A = [2,3,5,7,11,13,17,19,23,29,31,37]
+    elif n < 318665857834031151167461: A = [2,3,5,7,11,13,17,19,23,29,31,37]
+    elif n < 3317044064679887385961981: A = [2,3,5,7,11,13,17,19,23,29,31,37,41]
+    else: assert 0,'too large for verified miller rabin' # probably wont happen
+    for a in A: # perform test with smallest required witness set
+        if pow(a,d,n) != 1: # for (2^r)*d, use e=d, multiply by 2 each time
+            e = d
+            neqneg1forall = True
+            for r in range(s):
+                if pow(a,e,n) == n-1: # a**e mod n == -1
+                    neqneg1forall = False
+                    break
+                e *= 2
+            if neqneg1forall: return False # composite
+    return True # prime
+
 def palindrome(x): return str(x) == str(x)[::-1]
 
 def sum_digits(x):
@@ -225,6 +263,12 @@ if __name__ == '__main__':
     assert not prime(289) and not prime(561)
     assert not prime(1000013)
     assert prime(1000000007)
+    #
+    pl = set(list_primes2(100000))
+    for p in pl: assert miller_rabin_verified(p)
+    for p in range(10000,30000): assert (p in pl) == miller_rabin_verified(p)
+    for p in range(10**9,10**9+10000):
+        assert prime(p) == miller_rabin_verified(p)
     #
     assert palindrome(2) and palindrome(7) and palindrome(33)
     assert not palindrome(23) and not palindrome(37)
