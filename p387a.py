@@ -3,7 +3,7 @@ import libtkoz as lib
 limit = 10**14
 
 # recursively append digits to right to build right truncatable harshad numbers
-# takes ~9 sec (cpython / i5-2540m)
+# takes ~9 sec (cpython / i5-2540m) (slowest part is primality checking)
 
 # parameters are number and digit sum
 hsum = 0 # sum of harshad numbers, right truncatable, and strong
