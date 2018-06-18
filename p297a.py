@@ -5,7 +5,8 @@ limit = 10**17
 # numbers used in the representation are not consecutive
 # using f_2=1 and f_3=2, index in rtsum is sum of terms used in representations
 # for the fibonacci numbers below f_i (for index i)
-rtcount = [0,0,0,1] # (representation terms count)
+rtcount = [0,0,0] # (representation terms count)
+fiblist = [0,1,1]
 
 # consider F_n in F_n = F_n-1 + F_n-2
 # ways to represent numbers below F_n is ways to represent numbers below F_n-1
@@ -14,11 +15,31 @@ rtcount = [0,0,0,1] # (representation terms count)
 # in general rtcount[n] = rtcount[n-1] + F_n-2 + rtcount[n-2]
 # the wikipedia diagram is very helpful in understanding this
 
-a, b, c = 0, 1, 2
-fib_i = 3
+# use above to generate fibonacci numbers and counts of how many terms are used
+# in representing all the numbers below each
+a, b, c = 0, 1, 1
+fib_i = 2
 while True:
     a, b, c = b, c, b+c # c represents F_n, a represents F_n-2
     fib_i += 1
     rtcount.append(rtcount[-1] + a + rtcount[-2])
-    print('f',fib_i,'=',c,'rtsum =',rtcount[-1])
+    fiblist.append(c)
+    print(': f',fib_i,'=',fiblist[-1],'rtsum =',rtcount[-1])
     if c >= limit: break
+
+# break the number into smaller pieces recursively by picking the largest
+# fibonacci up to the limit and counting those, this leaves leftover numbers
+# from this fibonacci choice up to below limit that arent counted so for those
+# count how many there are (1st term) plus terms in representation of fibonacci
+# numbers below (limit - fibonacci choice), do this until picking a fibonacci
+# number equal to limit
+def count(lim):
+    global rtcount, fiblist
+    if lim == 0: return 0 # nothing to count
+    fi = 0 # find largest fibonacci number up to limit
+    while fiblist[fi+1] <= lim: fi += 1
+    rem = lim - fiblist[fi] # how many left to count recursively
+    print(': counting',rtcount[fi],'terms below',fiblist[fi],'and',rem,
+          'numbers left')
+    return rtcount[fi] + rem + count(rem)
+print(count(limit))
