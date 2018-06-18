@@ -1,5 +1,7 @@
 
 limit = 10**17
+printgeninfo = False
+printcountinfo = False
 
 # dynamic programming, zeckendorf representation requires that the fibonacci
 # numbers used in the representation are not consecutive
@@ -24,7 +26,7 @@ while True:
     fib_i += 1
     rtcount.append(rtcount[-1] + a + rtcount[-2])
     fiblist.append(c)
-    print(': f',fib_i,'=',fiblist[-1],'rtsum =',rtcount[-1])
+    if printgeninfo: print(': f',fib_i,'=',fiblist[-1],'rtsum =',rtcount[-1])
     if c >= limit: break
 
 # break the number into smaller pieces recursively by picking the largest
@@ -39,7 +41,8 @@ def count(lim):
     fi = 0 # find largest fibonacci number up to limit
     while fiblist[fi+1] <= lim: fi += 1
     rem = lim - fiblist[fi] # how many left to count recursively
-    print(': counting',rtcount[fi],'terms below',fiblist[fi],'and',rem,
-          'numbers left')
+    if printcountinfo:
+        print(': counting',rtcount[fi],'terms below',fiblist[fi],'and',rem,
+              'numbers left')
     return rtcount[fi] + rem + count(rem)
 print(count(limit))
