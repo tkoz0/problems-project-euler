@@ -16,11 +16,12 @@ while True:
                                          (2**(-y))**(bits-ones)
         # remaining 0 bits must have corresponding ones for next to be success
         s = 2**(ones-bits)
-        eweight = (y+1) * p * s # amount to add to expected value
-        expected += eweight
-        iteradd += eweight
+        iteradd += p*s # amount to add to expected value (multiply y+1 later)
+    iteradd *= y+1 # contribution weighted by iterations to success
+    expected += iteradd
     # end when contribution to expected value is small enough
     if iteradd < 10**(-precision-1): break
     y += 1
+# round by integer conversion, 10 least significant digits after decimal point
 expected = round(expected * 10**precision)
 print(expected//(10**precision),'.',expected%(10**precision),sep='')
