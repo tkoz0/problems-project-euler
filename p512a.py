@@ -1,4 +1,3 @@
-import libtkoz as lib
 
 gval = 5*10**8
 
