@@ -16,13 +16,19 @@ for p in range(2,limit): # for each prime
         sieve[i] = sieve[i]*(p-1)//p
 primes = lib.list_primes2(limit-1)
 
-def seq(n): # sequence length generated starting at n
-    global sieve
-    s = 1
-    while n != 1:
-        n = sieve[n]
-        s += 1
-    return s
+# since totient chains are strictly decreasing, replace sieve values with the
+# sequence length of the integers so they can be computed more quickly for
+# larger starting numbers, considering the average prime gap, this does not
+# actually do much to improve efficiency
 
-# sum primes that produce required sequence length
-print(sum(p for p in primes if seq(p) == seqlen))
+# now loop over all integers
+prevp = 2
+total = 0
+for p in primes:
+    while prevp <= p: # compute sequence lengths for all integers
+        sieve[prevp] = 1 + sieve[sieve[prevp]]
+        prevp += 1
+    # once sequence length for the prime is known, if its 25 add the prime
+    if sieve[p] == seqlen: total += p
+print(total)
+quit()
