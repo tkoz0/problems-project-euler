@@ -1,22 +1,13 @@
 
 Cval = 600 # 3sec with pypy, 3min with cpython
 
-def xgen(): # 1248^n % 32323 - 16161
-    x = 1248 # represents modpow value
-    while True:
-        yield x-16161
-        x = (x*1248)%32323
-
-def ygen(): # 8421^n % 30103 - 15051
-    y = 8421 # similar to xgen()
-    while True:
-        yield y-15051
-        y = (y*8421)%30103
-
 def pgen(): # returns coordinates
-    x = xgen()
-    y = ygen()
-    while True: yield (next(x),next(y))
+    x = 1248
+    y = 8421
+    while True:
+        yield (x-16161,y-15051)
+        x = (x*1248)%32323
+        y = (y*8421)%30103
 
 pg = pgen()
 points = list(next(pg) for i in range(Cval))
