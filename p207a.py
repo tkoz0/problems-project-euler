@@ -26,3 +26,18 @@ else: # add halves until finding answer
         bit //= 2
     m += 1
     print(m)
+
+# using k=z(z-1), for P(k) there are z-1 partitions, perfect partitions occur
+# when z is an integer exponent of 2, at those points, the ratio goes up then
+# decreases, then increases at next z=2^i, etc
+# we must find the largest z=2^i-1 such that the ratio is above ratiobelow
+i = 2 # skip 1 because division by zero
+while i/(2**i-2) >= ratiobelow: i += 1
+i -= 1
+print(': solution occurs when num perfect partitions =',i)
+# now we must find z such that i/(z-1)<ratio --> z > 1+i/ratio
+z = 1+i/ratiobelow # pick next integer
+if math.fabs(z-round(z)) < 2**(-32): z = 1+round(z) # z is integer already
+else: z = math.ceil(z)
+print(z*(z-1)) # solution, m such that z(z-1)<=m
+
