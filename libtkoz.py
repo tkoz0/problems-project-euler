@@ -151,10 +151,21 @@ def prime_factorization(n):
 
 # compute euler totient function, how many 1<=a<n are coprime to n
 def totient(n):
-    primes = set(prime_factorization(n))
-    for p in primes: # multiply by 1-1/p = (p-1)/p
-        n = n * (p-1) // p
-    return n
+    assert n > 0
+    t = n # totient result
+    if n % 2 == 0: # unique prime 2
+        n //= 2
+        t //= 2 # totient *= (2-1)/2, divide out remaining twos
+        while n % 2 == 0: n //= 2
+    d = 3 # odd divisors
+    while d*d <= n:
+        if n % d == 0: # another unique prime
+            n //= d
+            t = t*(d-1)//d
+            while n % d == 0: n //= d # divide out this factor entirely
+        d += 2
+    if n != 1: t = t*(n-1)//n # last prime factor
+    return t
 
 def binom_coeff(n, k): # computes binomial coefficient
     assert n >= k >= 0
