@@ -4,7 +4,8 @@ import math
 nlim = 10000000
 
 # minimize n/phi(n) but n and phi(n) must have same digits
-# very slow brute force, took about 7.5min (i5-2540m)
+# very slow brute force, took about 7min (cpython / i5-2540m)
+# note: pypy gave the wrong result (21)
 
 minratio = nlim # start large
 bestn = 0
