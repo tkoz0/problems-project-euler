@@ -1,14 +1,18 @@
 import libtkoz as lib
+import math
 
 nlim = 150*10**6
 steps = [1,3,7,9,13,27]
 
-# use an observation for efficiency, barely faster, ~1min (pypy / i5-2540m)
+# use an observation for efficiency, faster with miller rabin test
+# prime list eliminates lots of candidates, then the amount of use of the
+# miller rabin test is small so it can complete quickly after that
+# ~7sec (pypy / i5-2540m)
 # if some n=qx+r, a prime q, integer x, and remainder r,
 # n^2+s = q^2*x^2 + 2qxr + r^2+s
 # so if q | r^2+s then q | n^2+s
 
-plistsize = 2*10**6
+plistsize = int(math.sqrt(nlim))
 plist = lib.list_primes2(plistsize)
 
 candidates = []
@@ -35,16 +39,10 @@ def primes(n):
     assert n % 10 == 0
     global steps, plistsize
     n2 = n*n
-    # can start after primes tested using the list earlier
-    d = plistsize + (plistsize % 2) + 1
-    while d <= n: # search for factors
-        for s in steps:
-            if (n2+s) % d == 0: return False
-        d += 2
-    # make sure there arent any primes in between, miller rabin test
-    for s in range(1,steps[-1],2):
-        if (not s in steps) and lib.miller_rabin_verified(n2+s):
-            return False
+    for s in steps: # if any are composite
+        if not lib.miller_rabin_verified(n2+s): return False
+    for s in range(1,steps[-1],2): # make sure they are consecutive
+        if (not s in steps) and lib.miller_rabin_verified(n2+s): return False
     return True
 
 total = 0
