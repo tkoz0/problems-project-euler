@@ -104,6 +104,21 @@ def gcd_euclid(m, n):
         m, n = n, m % n
     return n
 
+def gcd_euclid_ext(a, b): # returns (gcd, x, y) where ax+by=gcd
+    assert a > 0 and b > 0
+    rev = a < b # algorithm uses a > b so this is if at end result is reversed
+    if rev: a, b = b, a
+    so, to, ro = 1, 0, a # old values
+    s, t, r = 0, 1, b # current values
+    while r != 0:
+        q = ro // r # quotient
+        ro, r = r, ro - q*r
+        so, s = s, so - q*s
+        to, t = t, to - q*t
+    # t, s are are a/gcd and b/gcd
+    if rev: return (ro, to, so)
+    else: return (ro, so, to)
+
 def is_square(n): return (int(math.sqrt(n)))**2 == n
 
 # slow loop for counting divisors, finds each factor
@@ -321,6 +336,17 @@ if __name__ == '__main__':
     for i in range(1,100):
         for j in range(1,100):
             assert gcd_euclid(i,j) == gcd_euclid(j,i)
+    #
+    for a in range(1,100): # verify gcd extended with gcd_euclid to help
+        for b in range(1,100):
+            g = gcd_euclid(a,b)
+            r1 = gcd_euclid_ext(a,b)
+            r2 = gcd_euclid_ext(b,a)
+            assert g == r1[0] == r2[0] # same gcd result
+            assert r1[1]*a + r1[2]*b == r1[0] # verify bezout identity
+            assert r2[1]*b + r2[2]*a == r2[0]
+    assert gcd_euclid_ext(2250,1050) == (150,1,-2)
+    assert gcd_euclid_ext(1050,2250) == (150,-2,1)
     #
     assert is_square(0) and is_square(1)
     assert is_square(64) and is_square(289)
