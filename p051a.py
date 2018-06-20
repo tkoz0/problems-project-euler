@@ -3,10 +3,10 @@ import libtkoz as lib
 familysize = 8
 # assert familysize in [8, 9, 10]
 
-primecache = lib.list_primes2(100000)
-primelim = primecache[-1]
-primecache = set(primecache)
+primelim = 100000
+primecache = lib.list_primes2(primelim,return_set=True)
 def is_prime(n):
+    global primelim, primecache
     if n > primelim: return lib.prime(n)
     return n in primecache
 

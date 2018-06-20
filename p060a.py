@@ -5,7 +5,7 @@ assert setsize >= 2
 
 # prime cache to speed up primality checking
 pclim = 1000000
-pcset = set(lib.list_primes2(pclim))
+pcset = lib.list_primes2(pclim,return_set=True)
 def is_prime(n):
     if n <= pclim: return n in pcset
     return lib.prime(n)

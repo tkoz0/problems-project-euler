@@ -3,7 +3,7 @@ import math
 
 limit = 1000000
 
-primes = set(lib.list_primes2(limit))
+primes = lib.list_primes2(limit,return_set=True)
 
 # brute force with some reduction, not much faster, ~0.3 sec (i5-2540m)
 # consider 2 and 5 separately, all other base 10 primes end in 1,3,7,9

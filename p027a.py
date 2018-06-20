@@ -12,7 +12,7 @@ pseqlenparam = 100 # estimate for longer sequences to determine prime cache size
 # if x may go up to 100, 100^2+1000*100+1000 ~= 10^5 --> seems reasonable
 # pick the largest term at x=100
 ptablemax = max(pseqlenparam**2, pseqlenparam*arange, brange)
-ptable = set(lib.list_primes2(ptablemax))
+ptable = lib.list_primes2(ptablemax,return_set=True)
 def prime(n):
     global ptable
     global ptablemax

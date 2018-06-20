@@ -2,7 +2,7 @@ import libtkoz as lib
 
 truncprimesexist = 11
 primecachesize = 1000000 # maximum number to cache
-primecache = set(lib.list_primes2(primecachesize))
+primecache = lib.list_primes2(primecachesize,return_set=True)
 
 # test primality with cache
 def is_prime(p):

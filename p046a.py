@@ -2,7 +2,7 @@ import libtkoz as lib
 import math
 
 # brute force with prime cache
-cache = set(lib.list_primes2(10000))
+cache = lib.list_primes2(10000,return_set=True)
 cachemax = max(cache)
 def is_prime(n):
     if n <= cachemax: return n in cache

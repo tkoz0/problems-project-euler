@@ -3,7 +3,7 @@ import math
 
 limit = 1000000
 
-primes = set(lib.list_primes2(limit))
+primes = lib.list_primes2(limit,return_set=True)
 
 # brute force try everything, ~0.5 sec (i5-2540m)
 circulars = {2, 5}
