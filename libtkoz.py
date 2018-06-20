@@ -75,7 +75,8 @@ def list_primes1(n): # takes n*sqrt(n) time
 
 # uses a sieve, based on solution from p010
 # optionally return the sieve itself for other uses
-def list_primes2(n,return_sieve=False):
+# also added return_set, to get a set instead of list
+def list_primes2(n,return_sieve=False,return_set=False):
     if n < 2: return []
     primes = [2]
     sievesize = (n+1) // 2 # last index has largest odd, index i means 2i+1
@@ -87,8 +88,13 @@ def list_primes2(n,return_sieve=False):
             sieve[i] = False
             i += nn # increment in n, increases number by 2n (cross off odds)
     if return_sieve: return sieve
-    for i in range(1, sievesize):
-        if sieve[i]: primes.append(2*i+1)
+    if return_set:
+        primes = set(primes) # make the 2 into a set
+        for i in range(1, sievesize):
+            if sieve[i]: primes.add(2*i+1)
+    else:
+        for i in range(1, sievesize):
+            if sieve[i]: primes.append(2*i+1)
     return primes
 
 def gcd_euclid(m, n):
