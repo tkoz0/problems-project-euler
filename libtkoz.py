@@ -83,10 +83,8 @@ def list_primes2(n,return_sieve=False,return_set=False):
     sieve = [True] * sievesize
     # loop for odds up to square root
     for nn in range(3, int(math.sqrt(n))+1, 2):
-        i = nn//2 + nn # initial cross off index, represents 3*(2*i+1)
-        while i < sievesize:
-            sieve[i] = False
-            i += nn # increment in n, increases number by 2n (cross off odds)
+        # start from nn^2, cross off odd multiples nn*nn, nn*(nn+2), ...
+        for i in range((nn*nn)//2,sievesize,nn): sieve[i] = False
     if return_sieve: return sieve
     if return_set:
         primes = set(primes) # make the 2 into a set
