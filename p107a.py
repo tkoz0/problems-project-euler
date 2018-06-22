@@ -14,6 +14,8 @@ for r in range(len(data)): assert data[r][r] is None
 # use a greedy algorithm to continually remove the highest weight non cut edge
 # repeatedly until no more can be removed without disconnecting the graph
 
+print(': graph has vertex count',len(data))
+
 totalweight = 0
 edgecount = 0
 for r in range(len(data)):
