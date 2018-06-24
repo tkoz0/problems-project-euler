@@ -1,4 +1,5 @@
 import math
+from bitarray import bitarray
 
 def prime(n): # requires sqrt(n) time
     if n < 2: return False;
@@ -80,9 +81,11 @@ def list_primes2(n,return_sieve=False,return_set=False):
     if n < 2: return []
     primes = [2]
     sievesize = (n+1) // 2 # last index has largest odd, index i means 2i+1
-    sieve = [True] * sievesize
+    sieve = bitarray(sievesize)
+    sieve.setall(True) # initialized to true = prime
     # loop for odds up to square root
     for nn in range(3, int(math.sqrt(n))+1, 2):
+        if not sieve[nn//2]: continue # marked composite
         # start from nn^2, cross off odd multiples nn*nn, nn*(nn+2), ...
         for i in range((nn*nn)//2,sievesize,nn): sieve[i] = False
     if return_sieve: return sieve
@@ -292,7 +295,7 @@ if __name__ == '__main__':
     assert prime(163)
     assert not prime(289) and not prime(561)
     assert not prime(1000013)
-    assert prime(1000000007)
+    assert prime(1000000007) and prime(1000000009)
     #
     pl = set(list_primes2(100000))
     for p in pl: assert miller_rabin_verified(p)
