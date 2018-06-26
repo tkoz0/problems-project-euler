@@ -1,47 +1,39 @@
 import libtkoz as lib
 
-Sn = 4
+Sn = 10
 
-# basic brute force approach, recursively generates all 10 digits numbers and
-# considers the primes
+def MNS(n,d):
+    Nnd, Snd = 0, 0
+    for Mnd in range(n-1,0,-1):
+        mask = ([0] * (n-Mnd)) + ([1] * Mnd) # 1=replaced digit, 0=other digits
+        # mask is in big endian
+        hasnextpermutation = True
+        while hasnextpermutation: # try all mask permutations
+            if d == 0 and mask[0] == 1: # cant have 0 at start of number
+                hasnextpermutation = lib.lexico_next(mask)
+                continue
+            # use base 9 to select digits for replacement digits
+            # if the b9 digit is b, b<d --> use itself, b>=d --> use b+1
+            for b9 in range(0,9**(n-Mnd)): # form numbers with the digits
+                if d != 0 and mask[0] == 0 and b9 % 9 == 0:
+                    continue # cant put 0 at start of number
+                num = 0
+                for m in mask:
+                    if m == 1: num = (num*10) + d # replaced digit
+                    else: # other digits
+                        b = b9 % 9
+                        if b >= d: b += 1
+                        num = (num*10) + b
+                        b9 //= 9
+                if lib.prime(num):
+                    Nnd += 1 # count
+                    Snd += num # sum
+            hasnextpermutation = lib.lexico_next(mask)
+        if Nnd != 0: # found primes with Mnd instances of d
+            print(': M(',n,',',d,') = ',Mnd,sep='')
+            print(': N(',n,',',d,') = ',Nnd,sep='')
+            print(': S(',n,',',d,') = ',Snd,sep='')
+            return (Mnd, Nnd, Snd)
+    assert 0 # should not reach here
 
-dcounts = [0]*10 # instances of each digit
-digits = []
-# index with [digit][num repeated], store counts and sums respectively
-drepcount = list(list(0 for i in range(Sn)) for j in range(10))
-drepsum = list(list(0 for i in range(Sn)) for j in range(10))
-def recurse():
-    global Sn, dcounts, digits, drepcount, drepsum
-    if len(digits) == Sn: # 10 digit number to include
-        n = 0
-        for d in digits: n = (10*n) + d # make number
-        if lib.prime(n): # if prime, consider in counting and summing
-            for d,c in enumerate(dcounts):
-                drepcount[d][c] += 1
-                drepsum[d][c] += n
-    else:
-        digits.append(0)
-        for d in range(10):
-            dcounts[d] += 1
-            digits[-1] = d
-            recurse() # try with next digit
-            dcounts[d] -= 1 # backtrack
-        digits.pop() # backtrack
-digits.append(0)
-for d in range(1,10): # initialize recursion with starting digits
-    print(': recursing starting digit',d)
-    dcounts[d] += 1
-    digits[-1] = d
-    recurse()
-    dcounts[d] -= 1 # backtrack
-
-total = 0 # result
-for d in range(10): # consider all digits
-    for c in range(Sn-1,-1,-1):
-        if drepcount[d][c] != 0:
-            print(': M(',Sn,',',d,') = ',c)#,sep='')
-            print(': N(',Sn,',',d,') = ',drepcount[d][c])#,sep='')
-            print(': S(',Sn,',',d,') = ',drepsum[d][c])#,sep='')
-            total += drepsum[d][c]
-            break
-print(total)
+print(sum(MNS(Sn,d)[2] for d in range(10)))
