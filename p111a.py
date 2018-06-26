@@ -25,7 +25,7 @@ def MNS(n,d):
                         if b >= d: b += 1
                         num = (num*10) + b
                         b9 //= 9
-                if lib.prime(num):
+                if lib.miller_rabin_verified(num):
                     Nnd += 1 # count
                     Snd += num # sum
             hasnextpermutation = lib.lexico_next(mask)
