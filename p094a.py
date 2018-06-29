@@ -27,13 +27,13 @@ while True:
         print(': pell solution', a, b, k)
         if (2*a+1) % 3 == 0: # x=(3a-1)/2, a,a,a+1 case
             aa = (2*a+1)//3
-            perim = 3*aa-1
+            perim = 3*aa+1
             if perim > maxperim: break
             print(': triangle', aa, aa, aa+1)
             perimsum += perim
         if (2*a-1) % 3 == 0: # x=(3a+1)/2, a-1,a,a case
             aa = (2*a-1)//3
-            perim = 3*aa+1
+            perim = 3*aa-1
             if perim > maxperim: break
             print(': triangle', aa-1, aa, aa)
             perimsum += perim
