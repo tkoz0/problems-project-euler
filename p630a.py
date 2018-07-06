@@ -24,12 +24,8 @@ for i1,p1 in enumerate(pointlist):
         p2 = pointlist[i2]
         dx = p2[0] - p1[0]
         dy = p2[1] - p1[1]
-        if dx == 0: # vertical / undefined slope
-            m = None
-            pass
-        else:
-            m = Fraction(dy,dx)
-            pass
+        if dx == 0: m = None # vertical / undefined slope
+        else: m = Fraction(dy,dx)
         # lines can be uniquely determined by x,y interept (including not having
         # either due to being vertical / horizontal
         if m == 0: intercept = (None,p1[1]) # horizontal
