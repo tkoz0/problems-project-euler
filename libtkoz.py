@@ -99,8 +99,9 @@ def list_primes2(n,return_sieve=False,return_set=False):
     return primes
 
 def gcd_euclid(m, n):
-    assert m > 0 and n > 0
     if n > m: m, n = n, m # fix order
+    assert m >= n >= 0
+    if n == 0: return m # avoid division by zero
     while m % n != 0:
         m, n = n, m % n
     return n
@@ -348,6 +349,7 @@ if __name__ == '__main__':
             assert r2[1]*b + r2[2]*a == r2[0]
     assert gcd_euclid_ext(2250,1050) == (150,1,-2)
     assert gcd_euclid_ext(1050,2250) == (150,-2,1)
+    for n in range(100): assert gcd_euclid(n,0) == gcd_euclid(0,n) == n
     #
     assert is_square(0) and is_square(1)
     assert is_square(64) and is_square(289)
