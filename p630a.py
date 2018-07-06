@@ -44,6 +44,7 @@ ML = sum(len(s) for s in linetable.values()) # number of distinct lines
 # a line intersects every line with different slope
 SL = sum((ML - len(s))*len(s) for s in linetable.values())
 
+print(':',len(linetable),'unique slopes')
 print(': M (',numpoints,') =',ML)#,sep='')
 print(': S (',numpoints,') =',SL)#,sep='')
 print(SL)
