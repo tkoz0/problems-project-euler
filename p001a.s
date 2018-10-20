@@ -11,7 +11,7 @@ main:
     movq $3,%r14 # division constants
     movq $5,%r15
 loopbegin:
-    dec %rbx
+    decq %rbx
     cmpq $0,%rbx
     je loopend # loop finished
     movq %rbx,%rax

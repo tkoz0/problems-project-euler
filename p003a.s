@@ -41,7 +41,7 @@ main:
 div2begin: # divide out factors of 2
     movq %rbp,%rax
     andq $1,%rax
-    cmp $1,%rax
+    cmpq $1,%rax
     je div2end # not divisible by 2
     shrq $1,%rbp # divide by 2
     jmp div2begin
@@ -66,7 +66,7 @@ divoddinnerbegin:
 divoddinnerskipdone:
     jmp divoddinnerbegin
 divoddinnerend:
-    add $2,%rsi # increment
+    addq $2,%rsi # increment
     jmp divoddbegin
 divoddend:
 answer:
