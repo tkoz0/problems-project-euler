@@ -27,7 +27,15 @@ def slope(line):
 
 def between(n,lo,hi):
     if lo > hi: lo,hi = hi,lo
-    return lo < n < hi
+    return lo <= n <= hi
+
+# is point bounded by the closed rectangle determined by the line
+# (checking if x,y is on the segment when known to be on the infinite line)
+def box_bounded(x,y,line):
+    return between(x,line[0],line[2]) and between(y,line[1],line[3])
+
+def is_endpoint(x,y,line):
+    return (x,y) == (line[0],line[1]) or (x,y) == (line[2],line[3])
 
 def true_intersect(line1,line2):
     s1,s2 = slope(line1),slope(line2) # slope vectors
@@ -43,10 +51,13 @@ def true_intersect(line1,line2):
     frac = Fraction(1,a1*b2-b1*a2)
     x = frac*(b2*c1-b1*c2)
     y = frac*(-a2*c1+a1*c2)
-    if between(x,line1[0],line1[2]) and between(x,line2[0],line2[2]) and \
-        between(y,line1[1],line1[3]) and between(y,line2[1],line2[3]):
-        return (x,y) # if the intersection point is interier to both lines
-    return None
+    # check that (x,y) is interier to both lines
+    # here, it is known to be the intersection of both infinite lines
+    if not (box_bounded(x,y,line1) and box_bounded(x,y,line2)):
+        return None # not bounded by both closed rectangles
+    if is_endpoint(x,y,line1) or is_endpoint(x,y,line2):
+        return None # cannot be an endpoint
+    return (x,y)
 
 segments = list(seg_gen(5000))
 
@@ -58,4 +69,4 @@ for i in range(len(segments)):
         if point is not None: true_intersections.add(point)
 
 print(len(true_intersections))
-# runs in 12 minutes, incorrect answer of 2856389
+# runs in 12 minutes
