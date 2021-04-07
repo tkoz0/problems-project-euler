@@ -1,12 +1,9 @@
 
--- infinite list of fibonacci terms helper function
--- a,b form the last 2 terms, use first as head and move forward to b,a+b
-fib_helper :: Integer -> Integer -> [Integer]
-fib_helper a b = a : fib_helper b (a+b)
-
 -- infinite list of fibonacci terms
+-- the helper function fibh uses a,b as fibonacci terms
+-- a is made into the list head while the parameters move forward to b,a+b
 fibs :: [Integer]
-fibs = fib_helper 0 1 -- start terms are 0,1
+fibs = let fibh a b = a : fibh b (a+b) in fibh 0 1
 
 -- simple solution, get numbers up to limit, keep evens, compute sum
 compute :: Integer -> Integer
