@@ -1,4 +1,3 @@
-import math
 
 # f(n,d) = occurrences of digit d in a list of numbers 0 through n
 # out of all s digit numbers, d != 0 occurs s*10^(s-1) times
@@ -37,25 +36,43 @@ def count_d(d,lo,hi):
 
 s_table = [[] for _ in range(10)]
 
+# for each digit, begin at 0,fn=f(n,d)=0
+# if equal, increment n by 1
+# if n < fn, increment by fn-n
+#     n increases to fn, in worst case fn does not increase so a fn=n point
+#     will not be skipped
+# if n > fn
+#     an upper bound worse case is fn increases by d each time n increases
+#     so increment by n-fn will ensure a fn=n point is not skipped
+# upper bound (d != 0)
+# f(10^11,d) >= 11 * 10^10 > 10^11
+# f(2*10^11,d) >= 3*10^11 (count lower 11 digits and the 1 on the left)
+# f(3*10^11,d) >= 4*10^11 (n has to increase by 10^11 to reach the 3*10^11 from
+# the previous one, but this will not happen obviously)
+# this can be repeated, f(k*10^11,d) >= (k+1)*10^11 holds
+
 for d in range(1,10):
     n = 0
     fn = f(n,d)
     bestlog2 = 0
     while True:
-        if n >= 2**50: # unproven upper bound
+        if n >= 10**11:
             break
-        if int(math.log2(n+1)) > bestlog2:
-            #print('reached',n,'diff =',fn-n,'log2 =',int(math.log2(n)))
-            bestlog2 = int(math.log2(n))
         if n == fn:
             s_table[d].append(n)
-            #print(n)
-        n_digits = len(str(n))
-        step = min((10**n_digits-n)//n_digits,abs(n-fn)//n_digits)
-        if step == 0:
-            step = 1
-        n += step
-        fn = f(n,d)
+            n += 1
+            fn = f(n,d)
+        elif n < fn:
+            n += fn-n
+            fn = f(n,d)
+        else:
+            assert n > fn
+            n_digits = len(str(n))
+            step = min((10**n_digits-n)//n_digits,(n-fn)//n_digits)
+            if step == 0:
+                step = 1
+            n += step
+            fn = f(n,d)
 
 total_sum = 0
 for d in range(1,10):
