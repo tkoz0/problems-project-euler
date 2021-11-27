@@ -29,6 +29,8 @@ count -= 2 # 2 spaces filled in the grid
 
 BL = 1 # compute B(L)
 
+import png
+
 while count != 0:
     bits = len(bases)
     nums = 2**bits
@@ -43,5 +45,7 @@ while count != 0:
         count -= 1
         BL += 1 + sum(1 for z in range(bits) if n & (1 << z))
     print(f'power {bits} done, {2**(bits+1)} numbers, {count} grid spaces left')
+    img = png.from_array([[255 if z else 0 for z in row] for row in grid],'L')
+    img.save(f'p508_p{bits:02}.png')
 
 print(f'B({L}) = {BL}')
