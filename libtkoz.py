@@ -287,6 +287,71 @@ def lexico_prev(l):
         i2 -= 1
     return True
 
+# find the cycle of b (^k) x (mod x) as a function of x=1,2,3,...
+# if the cycle is c1,c2,c3,...,cl and repeats starting at cj, then the
+# return value is [c1,c2,c3,...,cl],j
+# representing cycle c1,c2,c3,...,cl,cj,c(j+1),...,cl,cj,...
+# TODO add tests
+def knuth_cycle(b:int,k:int,m:int) -> tuple[list[int],int]:
+    assert b >= 1 and k >= 1 and m >= 1
+    retl: list[int] = []
+    retmap: dict[int,int] = dict()
+    if k == 1: # regular exponentiation
+        x = b%m
+        retl.append(x)
+        retmap[x] = 1
+        j = 1
+        while True:
+            j += 1
+            x = (x*b)%m
+            if x in retmap:
+                return retl,retmap[x]
+            else:
+                retl.append(x)
+                retmap[x] = j
+    else:
+        def get_from_cycle(cyc,j,ind): # 1-indexed cycle picking
+            ind -= 1
+            j -= 1 # return value -> 0-indexing
+            if ind < j:
+                return cyc[ind]
+            c = len(cyc) - j
+            return cyc[j+((ind-j)%c)]
+        cyc1,j1 = knuth_cycle(b,k-1,m) # cycle of b (^k-1) (mod m)
+        c = len(cyc1) - (j1-1) # cycle length = c
+        if c == 1:
+            cyc2,j2 = [0],1
+        else:
+            cyc2,j2 = knuth_cycle(b,k,c) # cycle of b (^k) (mod c)
+        # compute cycle
+        x = b%m
+        retl.append(x)
+        retmap[x] = 1
+        j = 1
+        while True:
+            j += 1
+            x = get_from_cycle(cyc1,j1,get_from_cycle(cyc2,j2,j-1))
+            if x in retmap:
+                return retl,retmap[x]
+            else:
+                retl.append(x)
+                retmap[x] = j
+
+# knuth up arrow modular arithmetic: b (^k) n (mod m) (^k is k up arrows)
+# computed with the knuth_cycle function using cyclic properties of exponents
+# TODO add tests
+def knuth_arrow(b:int,k:int,n:int,m:int) -> int:
+    assert b >= 1 and k >= 1 and n >= 1 and m >= 1
+    if k == 1:
+        return pow(b,n,m)
+    cyc,j = knuth_cycle(b,k,m)
+    ind = n-1
+    j -= 1
+    if ind < j:
+        return cyc[ind]
+    c = len(cyc)-j
+    return cyc[j+((ind-j)%c)]
+
 # some tests for these functions to check that they work properly
 if __name__ == '__main__':
     assert not prime(1) and prime(2) and prime(3)
