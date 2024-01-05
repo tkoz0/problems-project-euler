@@ -3,6 +3,7 @@ for a in range(1,1+S//3):
     for b in range(a+1,1+S//2):
         c = S - a - b
         if a*a + b*b == c*c:
+            print(f'triple ({a},{b},{c})')
             print(a*b*c)
 
 from math import sqrt,gcd
@@ -23,4 +24,5 @@ for m in range(1,1+int(sqrt(S//2))):
         b = 2*m*n
         c = m*m + n*n
         d = S//2//m//(m+n)
+        print(f'triple {d} * ({a},{b},{c})')
         print(a*b*c * d**3)

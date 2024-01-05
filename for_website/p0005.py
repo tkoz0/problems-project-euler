@@ -9,6 +9,7 @@ for p in primes:
     while p**(multiplicity+1) <= n:
         multiplicity += 1
     result *= p**multiplicity
+    print(f'factor {p}^{multiplicity}')
 print(result)
 
 from math import gcd

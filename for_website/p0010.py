@@ -15,3 +15,4 @@ for i in range(1,L//2): # 3 is at index 1
 
 # remember to include 2 in the sum
 print(2 + sum(2*i+1 for i in range(L//2) if sieve[i]))
+print(f'number of primes is {1 + sum(1 for i in range(L//2) if sieve[i])}')

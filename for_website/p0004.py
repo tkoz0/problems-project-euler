@@ -1,5 +1,6 @@
-D = 7
+D = 3
 largest = 0
+p,q = 0,0
 for a in range(10**D-1,10**(D-1)-1,-1):
     if a * (10**D-1) < largest:
         break
@@ -10,13 +11,18 @@ for a in range(10**D-1,10**(D-1)-1,-1):
         s = str(n)
         if s == s[::-1]:
             largest = n
+            p,q = a,b
+print(f'product {p} * {q}')
 print(largest)
 
 largest = 0
+p,q = 0,0
 for a in range(100,1000):
     for b in range(100,1000):
         n = a*b
         s = str(n)
         if n > largest and s == s[::-1]:
             largest = n
+            p,q = a,b
+print(f'product {p} * {q}')
 print(largest)
